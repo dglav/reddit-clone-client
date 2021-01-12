@@ -46,7 +46,7 @@ export const Register: React.FC<RegisterProps> = ({}) => {
               colorScheme="teal"
               isLoading={isSubmitting}
             >
-              Submit
+              Register
             </Button>
           </Form>
         )}
