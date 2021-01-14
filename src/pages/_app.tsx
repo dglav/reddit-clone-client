@@ -9,6 +9,7 @@ import {
   LoginMutation,
   MeQuery,
   RegisterMutation,
+  LogoutMutation,
 } from "../generated/graphql";
 
 function betterUpdateQuery<Result, Query>(
@@ -60,6 +61,18 @@ const client = createClient({
                 }
                 return {
                   me: result.register.user,
+                };
+              }
+            );
+          },
+          logout: (_result, args, cache, info) => {
+            betterUpdateQuery<LogoutMutation, MeQuery>(
+              cache,
+              { query: MeDocument },
+              _result,
+              () => {
+                return {
+                  me: null,
                 };
               }
             );
