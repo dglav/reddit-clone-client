@@ -7,7 +7,7 @@ import Layout from "../components/Layout";
 import NextLink from "next/link";
 
 const Index = () => {
-  const [{ data }] = usePostsQuery();
+  const [{ data }] = usePostsQuery({ variables: { limit: 10 } });
   return (
     <Layout>
       <NextLink href="/create-post">
