@@ -24,10 +24,7 @@ const Index = () => {
             return (
               <Box key={post.id} p={5} shadow="md" borderWidth="1px">
                 <Heading fontSize="xl">{post.title}</Heading>
-                <Text mt={4}>
-                  {post.text.slice(0, TEXT_SNIPPET_LENGTH)}
-                  {post.text.length > TEXT_SNIPPET_LENGTH && "..."}
-                </Text>
+                <Text mt={4}>{post.textSnippet}</Text>
               </Box>
             );
           })}
