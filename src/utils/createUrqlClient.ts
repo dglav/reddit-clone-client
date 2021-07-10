@@ -6,14 +6,17 @@ import {
   fetchExchange,
   stringifyVariables,
 } from "urql";
+import { gql } from "@urql/core";
 import { pipe, tap } from "wonka";
 import {
   LoginMutation,
   LogoutMutation,
   MeDocument,
   MeQuery,
+  PostSnippetFragment,
   RegisterMutation,
-} from "../generated/graphql";
+  VoteMutationVariables,
+} from "./../generated/graphql";
 import { betterUpdateQuery } from "./betterUpdateQuery";
 
 const errorExchange: Exchange =
@@ -79,6 +82,33 @@ export const createUrqlClient = (ssrExchange: any) => ({
       },
       updates: {
         Mutation: {
+          vote: (_result, args, cache, __) => {
+            const { postId, value } = args as VoteMutationVariables;
+            const data = cache.readFragment(
+              gql`
+                fragment _ on Post {
+                  id
+                  points
+                  voteStatus
+                }
+              `,
+              { id: postId }
+            );
+            if (data) {
+              if (data.voteStatus === value) return;
+              const newPoints =
+                (data.points as number) + value * (!data.voteStatus ? 1 : 2);
+              cache.writeFragment(
+                gql`
+                  fragment _ on Post {
+                    points
+                    voteStatus
+                  }
+                `,
+                { id: postId, points: newPoints, voteStatus: value }
+              );
+            }
+          },
           createPost: (_result, _, cache, __) => {
             const allFields = cache.inspectFields("Query");
             const fieldInfos = allFields.filter(
