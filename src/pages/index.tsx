@@ -44,7 +44,11 @@ const Index = () => {
               <Box key={post.id} shadow="md" borderWidth="1px" d="flex">
                 <UpdootSection post={post} />
                 <Box py={5} pr={5} flexGrow={1}>
-                  <Heading fontSize="xl">{post.title}</Heading>{" "}
+                  <NextLink href="/post/[id]" as={`/post/${post.id}`}>
+                    <Link>
+                      <Heading fontSize="xl">{post.title}</Heading>
+                    </Link>
+                  </NextLink>
                   <Text>posted by {post.creator.username}</Text>
                   <Text mt={4}>{post.textSnippet}</Text>
                 </Box>
