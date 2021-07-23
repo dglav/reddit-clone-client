@@ -12,10 +12,10 @@ export const Navbar: React.FC<NavbarProps> = ({}) => {
   const [{ fetching: logoutFetching }, logout] = useLogoutMutation();
 
   let body = null;
-  // data is loading
   if (fetching) {
-    // user not logged in
+    // data is loading
   } else if (!data?.me) {
+    // user not logged in
     body = (
       <>
         <NextLink href="/login">
@@ -28,10 +28,15 @@ export const Navbar: React.FC<NavbarProps> = ({}) => {
         </NextLink>
       </>
     );
-    // user is logged in
   } else {
+    // user is logged in
     body = (
-      <Flex>
+      <Flex align="center">
+        <NextLink href="/create-post">
+          <Button as={Link} mr={4}>
+            Create Post
+          </Button>
+        </NextLink>
         <Box mr={4} color="black">
           {data.me.username}
         </Box>
@@ -50,20 +55,17 @@ export const Navbar: React.FC<NavbarProps> = ({}) => {
   }
 
   return (
-    <Flex
-      zIndex={1}
-      position="sticky"
-      top={0}
-      bg="tan"
-      p={4}
-      alignItems="center"
-    >
-      <NextLink href="/">
-        <Link>
-          <Heading>LiReddit</Heading>
-        </Link>
-      </NextLink>
-      <Box ml="auto">{body}</Box>
+    <Flex zIndex={1} position="sticky" top={0} bg="tan" p={4} justify="center">
+      <Flex flex={1} alignItems="center" maxW={800}>
+        <Box>
+          <NextLink href="/">
+            <Link>
+              <Heading>LiReddit</Heading>
+            </Link>
+          </NextLink>
+        </Box>
+        <Box ml="auto">{body}</Box>
+      </Flex>
     </Flex>
   );
 };
