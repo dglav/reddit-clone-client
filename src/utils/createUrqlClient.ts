@@ -18,6 +18,7 @@ import {
   VoteMutationVariables,
 } from "./../generated/graphql";
 import { betterUpdateQuery } from "./betterUpdateQuery";
+import { isServer } from "./isServer";
 
 const errorExchange: Exchange =
   ({ forward }) =>
@@ -67,10 +68,18 @@ const cursorPagination = (): Resolver => {
   };
 };
 
-export const createUrqlClient = (ssrExchange: any) => ({
+export const createUrqlClient = (ssrExchange: any, ctx: any) => ({
   url: "http://localhost:4000/graphql",
-  fetchOptions: {
-    credentials: "include" as const,
+  fetchOptions: () => {
+    const cookie = isServer() ? ctx.req.headers.cookie : "";
+    return {
+      credentials: "include" as const,
+      headers: cookie
+        ? {
+            cookie,
+          }
+        : undefined,
+    };
   },
   exchanges: [
     dedupExchange,
