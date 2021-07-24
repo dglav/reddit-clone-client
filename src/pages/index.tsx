@@ -28,11 +28,16 @@ const Index = () => {
   });
 
   const [{ data: meData }] = useMeQuery();
-  const [{ data, fetching, stale }] = usePostsQuery({ variables });
+  const [{ data, fetching, stale, error }] = usePostsQuery({ variables });
   const [, deletePost] = useDeletePostMutation();
 
   if (!fetching && !data) {
-    return <div>you got query failed for some reason</div>;
+    return (
+      <>
+        <div>you got query failed for some reason</div>
+        <div>{error}</div>
+      </>
+    );
   }
 
   return (
