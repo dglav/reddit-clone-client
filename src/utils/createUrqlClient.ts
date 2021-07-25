@@ -1,4 +1,4 @@
-import { cacheExchange, Resolver } from "@urql/exchange-graphcache";
+import { cacheExchange, Resolver, Cache } from "@urql/exchange-graphcache";
 import Router from "next/router";
 import {
   dedupExchange,
@@ -69,6 +69,14 @@ const cursorPagination = (): Resolver => {
   };
 };
 
+const invalidateAllPosts = (cache: Cache) => {
+  const allFields = cache.inspectFields("Query");
+  const fieldInfos = allFields.filter((info) => info.fieldName === "posts");
+  fieldInfos.forEach((fieldInfo) => {
+    cache.invalidate("Query", "posts", fieldInfo.arguments ?? {});
+  });
+};
+
 export const createUrqlClient = (ssrExchange: any, ctx: any) => ({
   url: "http://localhost:4000/graphql",
   fetchOptions: () => {
@@ -126,13 +134,7 @@ export const createUrqlClient = (ssrExchange: any, ctx: any) => ({
             }
           },
           createPost: (_result, _, cache, __) => {
-            const allFields = cache.inspectFields("Query");
-            const fieldInfos = allFields.filter(
-              (info) => info.fieldName === "posts"
-            );
-            fieldInfos.forEach((fieldInfo) => {
-              cache.invalidate("Query", "posts", fieldInfo.arguments ?? {});
-            });
+            invalidateAllPosts(cache);
           },
           login: (_result, _, cache, __) => {
             betterUpdateQuery<LoginMutation, MeQuery>(
@@ -150,6 +152,7 @@ export const createUrqlClient = (ssrExchange: any, ctx: any) => ({
                 };
               }
             );
+            invalidateAllPosts(cache);
           },
           register: (_result, _, cache, __) => {
             betterUpdateQuery<RegisterMutation, MeQuery>(
