@@ -1,20 +1,27 @@
 import { NextPage } from "next";
 import { Box, Button } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
-import React from "react";
+import React, { useEffect } from "react";
 import InputField from "../components/InputField";
-import { useCreatePostMutation } from "../generated/graphql";
+import { useCreatePostMutation, useMeQuery } from "../generated/graphql";
 import { createUrqlClient } from "../utils/createUrqlClient";
 import { withUrqlClient } from "next-urql";
 import Layout from "../components/Layout";
-import { useIsAuth } from "../utils/useIsAuth";
 import { useRouter } from "next/router";
+import { isServer } from "../utils/isServer";
 
 type CreatePostProps = {};
 const CreatePost: NextPage<CreatePostProps> = ({}) => {
   const router = useRouter();
-  useIsAuth();
+  const [{ data, fetching }] = useMeQuery({
+    pause: isServer(),
+  });
   const [, createPost] = useCreatePostMutation();
+  useEffect(() => {
+    if (!fetching && !data?.me) {
+      router.replace("/login?next=" + router.pathname);
+    }
+  }, [fetching, data, router]);
 
   return (
     <Layout variant="small">
@@ -53,4 +60,4 @@ const CreatePost: NextPage<CreatePostProps> = ({}) => {
   );
 };
 
-export default withUrqlClient(createUrqlClient, { ssr: true })(CreatePost);
+export default withUrqlClient(createUrqlClient)(CreatePost);
