@@ -1,3 +1,4 @@
+import { NextPage } from "next";
 import { Box, Button, Link } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
 import { withUrqlClient } from "next-urql";
@@ -9,7 +10,7 @@ import InputField from "../components/InputField";
 import NextLink from "next/link";
 
 export type ForgotPasswordProps = {};
-export const ForgotPassword: React.FC<ForgotPasswordProps> = ({}) => {
+export const ForgotPassword: NextPage<ForgotPasswordProps> = ({}) => {
   const [{}, forgotPassword] = useForgotPasswordMutation();
   const [isComplete, setIsComplete] = useState(false);
 

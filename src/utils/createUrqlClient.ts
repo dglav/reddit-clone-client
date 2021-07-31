@@ -14,7 +14,6 @@ import {
   LogoutMutation,
   MeDocument,
   MeQuery,
-  PostSnippetFragment,
   RegisterMutation,
   VoteMutationVariables,
 } from "./../generated/graphql";
@@ -78,7 +77,7 @@ const invalidateAllPosts = (cache: Cache) => {
 };
 
 export const createUrqlClient = (ssrExchange: any, ctx: any) => ({
-  url: "http://localhost:4000/graphql",
+  url: process.env.NEXT_PUBLIC_API_URL as string,
   fetchOptions: () => {
     const cookie = isServer() ? ctx.req.headers.cookie : "";
     return {

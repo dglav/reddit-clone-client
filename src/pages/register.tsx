@@ -1,3 +1,4 @@
+import { NextPage } from "next";
 import React from "react";
 import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/dist/client/router";
@@ -10,7 +11,7 @@ import { toErrorMap } from "../utils/toErrorMap";
 import { createUrqlClient } from "../utils/createUrqlClient";
 
 export type RegisterProps = {};
-export const Register: React.FC<RegisterProps> = ({}) => {
+export const Register: NextPage<RegisterProps> = ({}) => {
   const router = useRouter();
   const [{}, register] = useRegisterMutation();
   return (

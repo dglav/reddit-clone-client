@@ -1,3 +1,4 @@
+import { NextPage } from "next";
 import React from "react";
 import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/dist/client/router";
@@ -11,7 +12,7 @@ import { createUrqlClient } from "../utils/createUrqlClient";
 import NextLink from "next/link";
 
 export type LoginProps = {};
-export const Login: React.FC<LoginProps> = ({}) => {
+export const Login: NextPage<LoginProps> = ({}) => {
   const router = useRouter();
   const [{}, login] = useLoginMutation();
   return (

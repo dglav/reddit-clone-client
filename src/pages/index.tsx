@@ -1,3 +1,4 @@
+import { NextPage } from "next";
 import React, { useState } from "react";
 import { withUrqlClient } from "next-urql";
 import { createUrqlClient } from "../utils/createUrqlClient";
@@ -21,7 +22,7 @@ import NextLink from "next/link";
 import { UpdootSection } from "../components/UpdootSection";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 
-const Index = () => {
+const Index: NextPage = () => {
   const [variables, setVariables] = useState({
     limit: 10,
     cursor: null as null | string,

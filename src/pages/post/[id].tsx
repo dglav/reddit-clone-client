@@ -5,9 +5,7 @@ import Layout from "../../components/Layout";
 import { Box, Heading } from "@chakra-ui/react";
 import { useGetPostFromUrl } from "../../utils/useGetPostFromUrl";
 
-interface Props {}
-
-const Post = (props: Props) => {
+const Post = () => {
   const [{ data, fetching, error }] = useGetPostFromUrl();
 
   if (fetching) {

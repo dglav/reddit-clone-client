@@ -1,3 +1,4 @@
+import { NextPage } from "next";
 import { Box, Button } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
 import React from "react";
@@ -9,7 +10,8 @@ import Layout from "../components/Layout";
 import { useIsAuth } from "../utils/useIsAuth";
 import { useRouter } from "next/router";
 
-const CreatePost: React.FC<{}> = ({}) => {
+type CreatePostProps = {};
+const CreatePost: NextPage<CreatePostProps> = ({}) => {
   const router = useRouter();
   useIsAuth();
   const [, createPost] = useCreatePostMutation();
@@ -51,4 +53,4 @@ const CreatePost: React.FC<{}> = ({}) => {
   );
 };
 
-export default withUrqlClient(createUrqlClient)(CreatePost);
+export default withUrqlClient(createUrqlClient, { ssr: true })(CreatePost);
